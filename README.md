@@ -2,9 +2,15 @@
 # Pymaceuticals Inc.
 
 ## Analysis
-OBSERVED TREND 1
-OBSERVED TREND 2
-OBSERVED TREND 3
+
+
+#### 1.	The efficacy of Capolulin is significantly better than Infubinol, Ketapril, and the placebo. Campolulin is the only treatment, which has positive correlation with tumor volume reduction, while tumor volume grew with other three Treatments.  During the 45 days treatment, under Capolulin treatment, Tumor Volumes dropped from 45 mm3 to average 36 mm3. Matastatic Spread grew slowest with Capululin, and it generated the highest survival rate.                                                                     
+
+#### 2.	Infubinol: The Matastatic spread went flat during day 30-35 and day 40-45. It could because of the treatment needs a month to start functioning, but it also could be not significant, will need longer period for observation. However, during the same period (30-35 dayas) the survival rate was dropping from 68 to 48, and after 40 to 45 the survival rate is the lowest, even if the treatment will effect after long term, mice might not be alive to see the improvement.                                                  
+
+#### 3.	 Ketapril: The end result of this treatment on Tumor Volume / Metastatic Site measuring are the worst during 45 days’ time span, but still comparable in Survival Rate with Infubinol&Placebo. But the standard error for Ketapril also the highest under those tests, meaning lower confidence about this result.                                                                                   
+
+#### 4.	Since the survival rate for Ketaril/Infubinol/Placebo are all below 50% after 45 days. The result for longer time span are not predictable for these treatment. 
 
 
 
@@ -598,6 +604,7 @@ plt.grid(linestyle='dotted')
 # Drawing the error bar for average tumor volume, matching it into above chart
 x_err = table_avg_volumn.index 
 
+count = 0
 for Drug in table_avg_volumn.columns:
     plt.errorbar(x_err, 
                  table_avg_volumn[Drug], 
@@ -1101,6 +1108,7 @@ plt.grid(linestyle='dotted')
 # Drawing the error bar for average met sites, matching it into above chart
 x_err_meta = table_avg_meta.index 
 
+count = 0
 for Drug in table_avg_meta.columns:
     plt.errorbar(x_err_meta, 
                  table_avg_meta[Drug], 
@@ -1253,6 +1261,7 @@ count_id
 
 x_axis = count_id.index
 
+count = 0
 for Drug in count_id:
     y_axis = count_id[Drug]/count_id.loc[0,Drug]*100 #alive count divided by beginning mice count
     plt.plot(x_axis, 
@@ -1269,7 +1278,7 @@ plt.xlabel('Time (Days)')
 plt.ylabel('Survival Rate (%)')
 plt.xticks(np.arange(0, table_avg_meta.index.max()+1 , 5)) 
 plt.xlim(0, count_id.index.max()+1) 
-plt.ylim(40,105)
+plt.ylim(30,105)
 plt.legend(['Capomulin', 'Infubinol', 'Ketapril', 'Placebo'], loc='best')
 plt.grid(linestyle='dotted')
 
@@ -1284,20 +1293,20 @@ plt.show()
 
 
 ```python
-# create new df for each Treatment and Metastatic Sites for seach timepoint
-volume_change = (avg_volumn.loc[45,:] - avg_volumn.loc[0, :])/avg_volumn.loc[0, :] * 100
-volume_change
 
+# create new df for each Treatment and Metastatic Sites for seach timepoint
+volume_change = (table_avg_volumn.loc[45,:] - table_avg_volumn.loc[0, :])/table_avg_volumn.loc[0, :] * 100
+volume_change
 ```
 
 
 
 
-    Drug
-    Capomulin   -19.475303
-    Infubinol    46.123472
-    Ketapril     57.028795
-    Placebo      51.297960
+                        Drug     
+    Tumor Volume (mm3)  Capomulin   -19.475303
+                        Infubinol    46.123472
+                        Ketapril     57.028795
+                        Placebo      51.297960
     dtype: float64
 
 
@@ -1306,13 +1315,14 @@ volume_change
 ```python
 # Draw a Graph for Tumor Change % over Treatment
 x_axis = np.arange(len(volume_change))
+Drugs = ['Capomulin', 'Infubinol', 'Ketapril', 'Placebo']
 plt.bar(x_axis, 
         volume_change, 
         color=["r" if volume_change[i] >0 else "g" for i in np.arange(len(x_axis))],
         align="center",
         )
 tick_locations = [value for value in x_axis]
-plt.xticks(tick_locations, tumor_change.index)
+plt.xticks(tick_locations, Drugs)
 
 # Formatting the Plot
 plt.title("Tumor Change Over 45 Days Treadment")
